@@ -180,6 +180,15 @@ cd yay
 makepkg -si
 
 # Install and configure hyprland
+
+If you use kde with hyperland and apply scaling in both of them then there will be conflicts in the scaling to fix that add the following in hyprland.conf
+
+### ─── GTK/Wayland Scaling for Firefox ─────────────────────
+env = GDK_SCALE,1
+env = GDK_DPI_SCALE,0.7
+env = MOZ_ENABLE_WAYLAND,1       # ensure Firefox uses Wayland backend
+
+
 - yay -S hyprland waybar wofi dolphin\(or use nautilus\) kitty sddm
 
 
