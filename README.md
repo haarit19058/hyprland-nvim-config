@@ -1,37 +1,70 @@
 # hyprland-nvim-config
 
-This repo is meant to guide all the travellers eager to aquire the power of arch and beauty, productiveness of hyperland. 
-Note: This guide is for uefi firmware only. I would suggest you to first check the type of hardware you are usign otherwise may run into problems.
+Welcome, traveler! This repository is your compass to harness the elegance of Arch and the power of Hyprland, all while boosting your productivity with Neovim.
 
-howToBuildArchHyper.md
-This file is the main guide that would help you install Arch linux and hyprland.
+> **⚠️ Note:** This guide assumes UEFI firmware. Please verify your hardware firmware type beforehand to avoid hiccups.
 
-nvim
-this folder contains the configuration for neovim paste it under ~/.config
+---
 
-kitty
-this folder contains config files for kitty terminal emulator. paste it under ~/.config
+## 📖 Table of Contents
 
-hypr
-this is where the magic happens. Unlike all other desktop environment hypr needs you attention the most. It needs you to know it very well. THis folder holds all the configuration files to make your hyprland look good/bad as per your liking
+1. [Guides](#guides)
+2. [Directory Structure](#directory-structure)
+3. [Fonts](#fonts)
+4. [Virtualization](#virtualization)
+5. [Helper Scripts](#helper-scripts)
+6. [Power Management](#power-management)
 
-font files .ttf
-I use Comic Mono for terminal and Consolas for vs code so i have provided them here.
+---
 
-Install and Setup QEMU.md
-this guide helps you to install and run qemu on arch linux
+## 📚 Guides
 
-virtualbox-configuration.md
-this will help you setup the virtul box and turn off the services by default to save power.
+* **`howToBuildArchHyper.md`**
+  The main walkthrough to install Arch Linux and configure Hyprland.
 
+* **`Install and Setup QEMU.md`**
+  Step-by-step to install and run QEMU on Arch Linux.
 
-copyfile.sh
-utility to make the work of copying the configuration files into the repo easy for me
+* **`virtualbox-configuration.md`**
+  Configuration tips for VirtualBox and how to disable services by default for power savings.
 
-qemu.sh
-script to run qemu services otherwise off by default.
+## 📂 Directory Structure
 
-vbox start/stop.sh
-scripts to start and stop vbox.
+```text
+├── howToBuildArchHyper.md          # Arch + Hyprland installation guide
+├── Install and Setup QEMU.md       # QEMU setup on Arch Linux
+├── virtualbox-configuration.md    # VirtualBox power-efficient setup
+├── nvim/                           # Neovim config (→ ~/.config/nvim)
+├── kitty/                          # Kitty terminal config (→ ~/.config/kitty)
+├── hypr/                           # Hyprland configs for a tailored desktop
+├── fonts/                          # .ttf files (Comic Mono, Consolas)
+├── copyfile.sh                     # Utility to sync config files
+├── qemu.sh                         # Toggle QEMU services on/off
+└── vbox start-stop.sh              # VirtualBox service toggle scripts
+```
 
-Note: always turn off the unecessary services. THese scripts are used to enable them temporarily. Other wise it will use a lots of battery on background.
+## 🖋️ Fonts
+
+* **Comic Mono** for your terminal
+* **Consolas** for VS Code
+
+Simply drop the `.ttf` files into your system fonts folder or install via your preferred font manager.
+
+## 🖥️ Virtualization
+
+* **QEMU:** Follow **`Install and Setup QEMU.md`** to get up and running.
+* **VirtualBox:** Use **`virtualbox-configuration.md`** to optimize performance and power usage.
+
+## 🛠️ Helper Scripts
+
+* **copyfile.sh** — Quickly symlink or copy your dotfiles into this repo.
+* **qemu.sh** — Enable/disable QEMU services on demand.
+* **vbox start-stop.sh** — Start or stop VirtualBox services easily.
+
+## 🔋 Power Management
+
+Always disable unnecessary background services to conserve battery life. Use the provided scripts to **enable services temporarily** only when needed.
+
+---
+
+Happy customizing! 🚀
