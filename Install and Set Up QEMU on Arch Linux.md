@@ -1,3 +1,11 @@
+## If the guest os does not resize properly then do following grom the guest os
+
+sudo apt update
+sudo apt install spice-vdagent qemu-guest-agent
+
+
+
+
 <img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" class="logo" width="120"/>
 
 ## Install and Set Up QEMU on Arch Linux
