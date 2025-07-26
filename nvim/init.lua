@@ -8,6 +8,12 @@ vim.cmd("set number")
 vim.cmd[[colorscheme vscode]]
 
 
+-- clipboard support
+vim.cmd[[set clipboard+=unnamedplus]]
+
+
+
+
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' }) -- space + ff open telecope file finder
