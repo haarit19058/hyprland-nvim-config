@@ -12,6 +12,7 @@ vim.cmd[[colorscheme vscode]]
 
 
 -- clipboard support
+-- install xclip for this to work
 vim.cmd[[set clipboard+=unnamedplus]]
 
 
