@@ -1,7 +1,7 @@
 {
   "Comment.nvim": { "branch": "master", "commit": "e30b7f2008e52442154b66f7c519bfd2f1e32acb" },
-  "catppuccin": { "branch": "main", "commit": "fa42eb5e26819ef58884257d5ae95dd0552b9a66" },
-  "cyberdream.nvim": { "branch": "main", "commit": "f660ebfd8840e226d2a5368e08108a7aa84fef36" },
+  "catppuccin": { "branch": "main", "commit": "84336e08415858f6d835835e81a4f79e585463c6" },
+  "cyberdream.nvim": { "branch": "main", "commit": "14b254d37bb725bf9a92f741f0c4a429f253418c" },
   "everforest": { "branch": "master", "commit": "f40c2e6c8784c99c57c79edc94cd180e76450222" },
   "gruvbox-material": { "branch": "master", "commit": "66cfeb7050e081a746a62dd0400446433e802368" },
   "kanagawa": { "branch": "master", "commit": "debe91547d7fb1eef34ce26a5106f277fbfdd109" },
