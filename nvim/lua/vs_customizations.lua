@@ -1,6 +1,4 @@
-local opts = { noremap = true, silent = true }
-
-
+local opts ={ noremap = true, silent = true }
 
 
 -- alt + up / down
@@ -38,8 +36,6 @@ vim.keymap.set('n', '<C-_>', function() require('Comment.api').toggle.linewise.c
 vim.keymap.set('v', '<C-_>', "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>", opts)
 
 vim.keymap.set('i', '<C-_>', '<Esc><cmd>lua require("Comment.api").toggle.linewise.current()<CR>gi', opts)
-
-
 
 
 
@@ -124,5 +120,28 @@ end, opts)
 vim.keymap.set("n", "<leader><space>", "<Cmd>nohlsearch<CR>", opts)
 
 
+
+
+
+-- saving the file
+vim.keymap.set("i", "<C-s>", "<Esc>:w<CR>i", opts)
+vim.keymap.set("n", "<C-s>", ":w<CR>", opts)
+
+
+
+-- SAVE: Ctrl + S
+vim.keymap.set("i", "<C-s>", "<Esc>:w<CR>i", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true })
+vim.keymap.set("v", "<C-s>", "<Esc>:w<CR>gv", { noremap = true, silent = true })
+
+-- UNDO: Ctrl + Z
+vim.keymap.set("n", "<C-z>", "u", { noremap = true, silent = true })               -- normal
+vim.keymap.set("i", "<C-z>", "<Esc>u" .. "i", { noremap = true, silent = true })   -- insert
+vim.keymap.set("v", "<C-z>", "<Esc>u" .. "gv", { noremap = true, silent = true })  -- visual (reselect)
+
+-- REDO: Ctrl + Shift + Z or Ctrl + Y
+vim.keymap.set("n", "<C-y>", "<C-r>", { noremap = true, silent = true })           -- optional redo key
+vim.keymap.set("i", "<C-y>", "<Esc><C-r>" .. "i", { noremap = true, silent = true })
+vim.keymap.set("v", "<C-y>", "<Esc><C-r>" .. "gv", { noremap = true, silent = true })
 
 

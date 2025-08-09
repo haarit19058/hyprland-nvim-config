@@ -1,0 +1,7 @@
+bastet
+git-credential-manager
+google-chrome
+neofetch
+pipes.sh
+visual-studio-code-bin
+volta

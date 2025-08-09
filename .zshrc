@@ -82,10 +82,10 @@ using namespace std;
 const int MOD = 1e9+71
 
 using ll = long long;
-using pii = pair<int,int>
-using pll = pair<ll,ll>
-using mll = unordered_map<ll,ll>
-using mii = unordered_map<int,int>
+using pii = pair<int,int>;
+using pll = pair<ll,ll>;
+using mll = unordered_map<ll,ll>;
+using mii = unordered_map<int,int>;
 
 int main() {
     ios::sync_with_stdio(false);
