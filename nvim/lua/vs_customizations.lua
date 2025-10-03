@@ -143,5 +143,10 @@ vim.keymap.set("v", "<C-z>", "<Esc>u" .. "gv", { noremap = true, silent = true }
 vim.keymap.set("n", "<C-y>", "<C-r>", { noremap = true, silent = true })           -- optional redo key
 vim.keymap.set("i", "<C-y>", "<Esc><C-r>" .. "i", { noremap = true, silent = true })
 vim.keymap.set("v", "<C-y>", "<Esc><C-r>" .. "gv", { noremap = true, silent = true })
+--
+-- vim.keymap.set("i", "<C-S-x>", [[<Esc>:wq]], opts)
+vim.keymap.set("i", "<C-x>", "<Esc><cmd>wq<cr>", opts)
+vim.keymap.set("n", "<C-x>", "<cmd>wq<cr>", opts)
+vim.keymap.set("v", "<C-x>", "<Esc><cmd>wq<cr>", opts)
 
 

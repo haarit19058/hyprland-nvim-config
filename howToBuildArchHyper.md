@@ -25,7 +25,7 @@ function runcp() {
 
 # Installing the base Arch system
 First of all download the iso file and burn it on the drive using rufus.
-Now make a free partition using the disk manager in windows. Free means unallocated space.
+Now make a free partition using the disk manager in windows. Free means unallocated spac
 
 Now boot into the pendrive from bios and run following commands.
 
@@ -85,7 +85,7 @@ This will take a lots of time. Will download ~800M data
 
 ## generate fstab file
 - genfstab -U /mnt >> /mnt/etc/fstab // generate the fstab file
-- cat /mnt/etc/fstab    //  verify
+- cat /mnt/etc/fstabu   //  verify
 
 ## chroot into the base system
 - arch-chroot /mnt
