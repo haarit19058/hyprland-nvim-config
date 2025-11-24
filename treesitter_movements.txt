@@ -1,0 +1,83 @@
+=========================
+Neovim Treesitter Movement Cheat Sheet
+=========================
+
+Treesitter provides syntax-aware navigation — you can move between functions,
+classes, loops, and other syntax nodes instead of just lines or words.
+
+-- PREREQUISITE --
+Make sure `nvim-treesitter` and `nvim-treesitter-textobjects` are installed and configured.
+
+Example setup snippet (init.lua):
+
+require'nvim-treesitter.configs'.setup {
+  highlight = { enable = true },
+  incremental_selection = { enable = true },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true,
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+        ["]]"] = "@class.outer",
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+        ["]["] = "@class.outer",
+      },
+      goto_previous_start = {
+        ["[m"] = "@function.outer",
+        ["[["] = "@class.outer",
+      },
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+        ["[]"] = "@class.outer",
+      },
+    },
+  },
+}
+
+-- TREESITTER MOVEMENTS --
+
+]m   : Jump to next function start
+]M   : Jump to next function end
+[m   : Jump to previous function start
+[M   : Jump to previous function end
+
+]]   : Jump to next class start
+][   : Jump to next class end
+[[   : Jump to previous class start
+[]   : Jump to previous class end
+
+-- TEXTOBJECT SELECTIONS --
+af   : Select around a function (outer)
+if   : Select inside a function (inner)
+ac   : Select around a class (outer)
+ic   : Select inside a class (inner)
+
+-- INCREMENTAL SELECTION --
+<leader>v : Initialize selection
+<leader>v : Expand to next node
+<leader>V : Expand to scope
+<BS>      : Shrink selection
+
+-- BONUS EXAMPLES (depends on parser) --
+ai / ii : Around / inside an if-statement
+al / il : Around / inside a loop
+ab / ib : Around / inside a block (like { ... })
+
+-- NOTES --
+- Motions are syntax-aware, not line-based.
+- Customize in your init.lua under `textobjects.move`.
+- Works across programming languages supported by Treesitter parsers.
+

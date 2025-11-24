@@ -1,0 +1,84 @@
+=========================
+Neovim Keyboard Navigation Cheat Sheet
+=========================
+
+-- BASIC MOVEMENT --
+h   : Move left
+j   : Move down
+k   : Move up
+l   : Move right
+0   : Start of line
+$   : End of line
+^   : First non-blank character
+gg  : Go to start of file
+G   : Go to end of file
+Ctrl+u : Scroll up half page
+Ctrl+d : Scroll down half page
+Ctrl+b : Page up
+Ctrl+f : Page down
+
+-- WORD & SENTENCE NAVIGATION --
+w   : Next word start
+e   : End of current/next word
+b   : Previous word start
+ge  : Previous word end
+}   : Next paragraph
+{   : Previous paragraph
+(   : Previous sentence
+)   : Next sentence
+
+-- SEARCHING & FINDING --
+/word : Search forward for “word”
+?word : Search backward
+n     : Next match
+N     : Previous match
+f<char> : Find char forward in line
+F<char> : Find char backward
+t<char> : Till before char forward
+T<char> : Till after char backward
+;     : Repeat last f/F/t/T forward
+,     : Repeat last f/F/t/T backward
+
+-- JUMP NAVIGATION --
+%     : Jump between matching brackets
+Ctrl+o : Jump back to previous cursor location
+Ctrl+i : Jump forward to next cursor location
+''    : Jump to previous line
+``    : Jump to exact previous position
+
+-- SMART SEARCHING --
+*     : Search word under cursor (forward)
+#     : Search word under cursor (backward)
+g*    : Search partial word match
+
+-- SCROLLING & CENTERING --
+zz    : Center current line on screen
+zt    : Scroll line to top
+zb    : Scroll line to bottom
+Ctrl+e : Scroll window up one line
+Ctrl+y : Scroll window down one line
+
+-- MARKS --
+ma    : Set mark 'a' at current position
+'a    : Jump to start of line of mark 'a'
+`a    : Jump to exact position of mark 'a'
+:marks : Show all marks
+
+-- OPERATORS + MOTIONS --
+dw    : Delete to start of next word
+d$    : Delete to end of line
+y}    : Yank next paragraph
+caw   : Change a word
+dap   : Delete a paragraph
+
+-- POWER PLUGINS (optional) --
+leap.nvim     : Jump to any text with 2 keys
+hop.nvim      : Motion navigation plugin
+telescope.nvim: Fuzzy finder
+treesitter    : Syntax-aware movement
+harpoon       : Quick file bookmarks
+
+-- PRACTICE TIPS --
+- Avoid arrow keys
+- Practice new motions daily
+- Run `vimtutor` in terminal
