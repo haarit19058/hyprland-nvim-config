@@ -40,6 +40,53 @@ end)
 
 
 
+
+vim.keymap.set({ "n", "v" }, "<C-q>", function()
+  local mode = vim.fn.mode()
+  local start_line, end_line, text
+
+  if mode == "v" or mode == "V" or mode == "\22" then
+    -- Visual mode: use visual marks
+    start_line = vim.fn.line("'<")
+    end_line   = vim.fn.line("'>")
+    if start_line > end_line then start_line, end_line = end_line, start_line end
+
+    local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+    text = table.concat(lines, "\n")
+  else
+    -- Normal mode fallback: use word under cursor and operate on whole file
+    start_line = 1
+    end_line = vim.api.nvim_buf_line_count(0)
+    text = vim.fn.expand("<cword>")
+    if text == "" then
+      print("No word under cursor to replace")
+      return
+    end
+  end
+
+  -- If text contains newlines, warn (simple s/// won't match newlines)
+  if text:find("\n", 1, true) then
+    print("Multi-line selection: this mapping doesn't support replacing multi-line blocks as a single pattern.")
+    return
+  end
+
+  -- Escape the text for the search pattern and escape replacement for & and backslashes
+  local search_esc = vim.fn.escape(text, "/\\")
+  local replacement = vim.fn.input("Replace '" .. text .. "' with: ")
+  local repl_esc = vim.fn.escape(replacement, "\\&/")
+
+  -- Build and run the substitute command
+  if start_line == 1 and end_line == vim.api.nvim_buf_line_count(0) then
+    -- whole-file
+    vim.cmd("silent %s/" .. search_esc .. "/" .. repl_esc .. "/g | update")
+  else
+    vim.cmd(string.format("silent %d,%ds/%s/%s/g | update", start_line, end_line, search_esc, repl_esc))
+  end
+end, opts)
+
+
+
+
 --   key bindings
 
 local opts ={ noremap = true, silent = true }
@@ -61,112 +108,6 @@ vim.api.nvim_set_keymap("i", "<A-Down>", "<Esc>:m .+1<CR>==gi", opts)
 
 
 
-
-
-
--- Install this using lua to enable the comment shortcut
--- {
---  'numToStr/Comment.nvim',
---  config = function()
---    require('Comment').setup()
---  end
--- }
-
-
-
--- Toggle comment with Ctrl+/
-vim.keymap.set('n', '<C-_>', function() require('Comment.api').toggle.linewise.current() end, opts)
-
-vim.keymap.set('v', '<C-_>', "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>", opts)
-
-vim.keymap.set('i', '<C-_>', '<Esc><cmd>lua require("Comment.api").toggle.linewise.current()<CR>gi', opts)
-
-
-
-
-
-
-
-
--- Search for word under cursor (like Ctrl+F)
-vim.keymap.set("n", "<C-f>", [[/\<<C-r><C-w>\><CR>]], opts)
-
--- normal mode: Extend selection
-vim.keymap.set("n", "<S-Left>", "v<Left>", opts)
-vim.keymap.set("n", "<S-Right>", "v<Right>", opts)
-vim.keymap.set("n", "<S-Up>", "v<Up>", opts)
-vim.keymap.set("n", "<S-Down>", "v<Down>", opts)
-
--- VISUAL mode: Extend selection
-vim.keymap.set("v", "<S-Left>", "<Left>", opts)
-vim.keymap.set("v", "<S-Right>", "<Right>", opts)
-vim.keymap.set("v", "<S-Up>", "<Up>", opts)
-vim.keymap.set("v", "<S-Down>", "<Down>", opts)
-
--- INSERT mode: Exit insert, enter visual, move, and return to insert
-vim.keymap.set("i", "<S-Left>", "<Esc>v<Left>gi", opts)
-vim.keymap.set("i", "<S-Right>", "<Esc>v<Right>gi", opts)
-vim.keymap.set("i", "<S-Up>", "<Esc>v<Up>gi", opts)
-vim.keymap.set("i", "<S-Down>", "<Esc>v<Down>gi", opts)
-
-
-
-
-
--- Insert mode: Exit insert, do the same, then return to insert mode
-vim.keymap.set("i", "<C-l>", [[<Esc>:%s/\<<C-r><C-w>\>//g<Left><Left>]], opts)
-
-vim.keymap.set("v", "<C-l>", function(start_line, end_line)
-  -- If no explicit lines given, get visual selection range
-  start_line = start_line or vim.fn.line("v")
-  end_line = end_line or vim.fn.line(".")
-
-  -- Ensure correct order
-  if start_line > end_line then
-    start_line, end_line = end_line, start_line
-  end
-
-  -- Yank the visual selection
-  vim.cmd('normal! "vy')
-  local text = vim.fn.getreg("v"):gsub("/", "\\/")
-
-  -- Prompt for replacement text
-  local replacement = vim.fn.input("Replace '" .. text .. "' with: ")
-
-  -- If lines are equal and no visual mode (fallback case), use whole file
-  if start_line == end_line and vim.fn.mode() ~= 'v' and vim.fn.mode() ~= 'V' then
-    vim.cmd(":%s/" .. text .. "/" .. replacement .. "/g")
-  else
-    vim.cmd(start_line .. "," .. end_line .. "s/" .. text .. "/" .. replacement .. "/g")
-  end
-end, opts)
-
-
-
-
-
-vim.keymap.set("v", "<C-f>", function()
-  -- Yank selected text into register v
-  vim.cmd('normal! "vy')
-  local text = vim.fn.getreg("v")
-
-  -- Escape special characters for search
-  text = vim.fn.escape(text, [[\/.*$^~[]])
-
-  -- Set the search register and jump to first match
-  vim.fn.setreg("/", text)
-  vim.cmd("normal! n")  -- jump to next match
-
-  -- You’re now in normal mode, free to scroll
-end, opts)
-
--- Clear search highlight on <leader><space>
-vim.keymap.set("n", "<leader><space>", "<Cmd>nohlsearch<CR>", opts)
-
-
-
-
-
 -- saving the file
 vim.keymap.set("i", "<C-s>", "<Esc>:w<CR>i", opts)
 vim.keymap.set("n", "<C-s>", ":w<CR>", opts)
@@ -178,16 +119,7 @@ vim.keymap.set("i", "<C-s>", "<Esc>:w<CR>i", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true })
 vim.keymap.set("v", "<C-s>", "<Esc>:w<CR>gv", { noremap = true, silent = true })
 
--- UNDO: Ctrl + Z
-vim.keymap.set("n", "<C-z>", "u", { noremap = true, silent = true })               -- normal
-vim.keymap.set("i", "<C-z>", "<Esc>u" .. "i", { noremap = true, silent = true })   -- insert
-vim.keymap.set("v", "<C-z>", "<Esc>u" .. "gv", { noremap = true, silent = true })  -- visual (reselect)
 
--- REDO: Ctrl + Shift + Z or Ctrl + Y
-vim.keymap.set("n", "<C-y>", "<C-r>", { noremap = true, silent = true })           -- optional redo key
-vim.keymap.set("i", "<C-y>", "<Esc><C-r>" .. "i", { noremap = true, silent = true })
-vim.keymap.set("v", "<C-y>", "<Esc><C-r>" .. "gv", { noremap = true, silent = true })
---
 -- vim.keymap.set("i", "<C-S-x>", [[<Esc>:wq]], opts)
 vim.keymap.set("i", "<C-x>", "<Esc><cmd>wq<cr>", opts)
 vim.keymap.set("n", "<C-x>", "<cmd>wq<cr>", opts)
