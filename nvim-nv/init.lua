@@ -23,6 +23,44 @@ require("lazy").setup({
   },
 
   { import = "plugins" },
+
+  -- Add your overrides right here:
+  -- {
+  --   "hrsh7th/nvim-cmp",
+  --   opts = function(_, opts)
+  --     -- Disable automatic popup
+  --     opts.completion = {
+  --       autocomplete = false,
+  --     }
+  --
+  --     -- Keep LSP, buffer, lua, and path, but remove "luasnip"
+  --     opts.sources = {
+  --       { name = "nvim_lsp" },
+  --       { name = "buffer" },
+  --       { name = "nvim_lua" },
+  --       { name = "path" },
+  --     }
+  --
+  --     opts.snippet = {
+  --       expand = function(args)
+  --         vim.api.nvim_buf_set_text(0, args.line - 1, args.character, args.line - 1, args.character, { args.body })
+  --       end,
+  --     }
+  --
+  --     return opts
+  --   end,
+  -- },
+
+  -- {
+  --   "L3MON4D3/LuaSnip",
+  --   enabled = false,
+  -- },
+
+  {
+    "rafamadriz/friendly-snippets",
+    enabled = false,
+  },
+
 }, lazy_config)
 
 -- load theme
