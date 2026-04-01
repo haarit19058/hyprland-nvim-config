@@ -19,13 +19,14 @@ template = '''
 #include <bits/stdc++.h>
 using namespace std;
 
-const int MOD = 1e9+7;
 
 using ll = long long;
 using pii = pair<int,int>;
 using pll = pair<ll,ll>;
 using mll = unordered_map<ll,ll>;
 using mii = unordered_map<int,int>;
+
+const ll MOD = 1e9+7;
 
 void solve(){
     // code goes here 
@@ -186,7 +187,7 @@ def main():
     path = Path(filename)
     if not path.exists():
         path.write_text(template)
-        os.execvp("nvim",["nvim",filename])
+        print(f"Template saved at {path}")
         sys.exit(1)
 
     # 1. Parse
