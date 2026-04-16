@@ -1,3 +1,0 @@
-aarch64-none-elf-gcc-bin
-google-chrome
-visual-studio-code-bin

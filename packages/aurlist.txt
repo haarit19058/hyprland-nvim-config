@@ -1,7 +1,4 @@
-bastet
-git-credential-manager
+github-cli
 google-chrome
-neofetch
-pipes.sh
 visual-studio-code-bin
 volta
