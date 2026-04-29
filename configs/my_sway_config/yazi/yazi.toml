@@ -1,0 +1,34 @@
+[opener]
+
+text = [
+  { run = 'nvim "$@"', block = true }
+]
+
+image = [
+  { run = 'imv "$@"', orphan = true }
+]
+
+video = [
+  { run = 'mpv "$@"', orphan = true }
+]
+
+pdf = [
+  { run = 'okular "$@"', orphan = true }
+]
+
+browser = [
+  { run = 'firefox "$@"', orphan = true }
+]
+
+
+
+
+[open]
+rules = [
+  { mime = "text/*", use = "text" },
+  { mime = "image/*", use = "image" },
+  { mime = "video/*", use = "video" },
+  { mime = "application/pdf", use = "pdf" },
+  { mime = "inode/directory", use = "text" },
+  { name = "*", use = "browser" }
+]
