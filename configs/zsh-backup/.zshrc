@@ -10,7 +10,7 @@ fi
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-
+export WINIT_UNIX_BACKEND=wayland
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -148,7 +148,7 @@ source $ZSH/oh-my-zsh.sh
 
 
 
-source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -171,3 +171,5 @@ alias core='python ~/cptools/cfparse.py'
 alias meow='bash ~/cptools/nodemon.sh'
 
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

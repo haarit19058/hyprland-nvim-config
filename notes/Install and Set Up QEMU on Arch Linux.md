@@ -53,7 +53,7 @@ A result with `y` or `m` means KVM support is present[^2][^4].
 Install all necessary packages for virtualization:
 
 ```bash
-sudo pacman -S qemu-full qemu-img libvirt virt-install virt-manager virt-viewer edk2-ovmf swtpm guestfs-tools libosinfo dnsmasq vde2 bridge-utils openbsd-netcat ebtables iptables
+sudo pacman -S qemu-full qemu-img libvirt virt-install virt-manager virt-viewer edk3-ovmf swtpm guestfs-tools libosinfo dnsmasq vde2 bridge-utils openbsd-netcat ebtables iptables
 ```
 
 These packages provide QEMU, KVM, graphical and command-line VM management, UEFI support, networking, and more[^4][^5][^6][^7].
