@@ -21,6 +21,19 @@ require("lazy").setup({
     branch = "v2.5",
     import = "nvchad.plugins",
   },
+  {
+    "hrsh7th/nvim-cmp",
+    opts = function(_, opts)
+      -- Override the default completion sources
+      opts.sources = {
+        { name = "nvim_lsp" },
+        { name = "buffer" },   -- Keywords from current document
+        { name = "path" },
+        { name = "nvim_lua" },
+      }
+      -- Notice 'luasnip' is removed from this list
+    end,
+  },
 
   { import = "plugins" },
 }, lazy_config)
@@ -82,6 +95,22 @@ vim.keymap.set({ "n", "v" }, "<C-q>", function()
   end
 end, opts)
 
+
+
+-- Customization 
+
+
+
+
+-- ==========================================================
+-- ADDED: Standard Indentation Rules
+-- ==========================================================
+vim.opt.expandtab = true      -- Use spaces instead of tabs
+vim.opt.shiftwidth = 4        -- Size of an indent (Change to 2 if you prefer 2 spaces)
+vim.opt.tabstop = 4           -- Number of spaces tabs count for
+vim.opt.softtabstop = 4       -- Fine-tunes backspacing over indents
+vim.opt.smartindent = true    -- Insert indents automatically
+vim.opt.autoindent = true     -- Copy indent from current line when starting a new one
 
 
 
