@@ -1,0 +1,239 @@
+vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
+vim.g.mapleader = " "
+
+-- bootstrap lazy and all plugins
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+
+if not vim.uv.fs_stat(lazypath) then
+  local repo = "https://github.com/folke/lazy.nvim.git"
+  vim.fn.system { "git", "clone", "--filter=blob:none", repo, "--branch=stable", lazypath }
+end
+
+vim.opt.rtp:prepend(lazypath)
+
+local lazy_config = require "configs.lazy"
+
+-- load plugins
+require("lazy").setup({
+  {
+    "NvChad/NvChad",
+    lazy = false,
+    branch = "v2.5",
+    import = "nvchad.plugins",
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    opts = function(_, opts)
+      -- Override the default completion sources
+      opts.sources = {
+        { name = "nvim_lsp" },
+        { name = "buffer" },   -- Keywords from current document
+        { name = "path" },
+        { name = "nvim_lua" },
+      }
+      -- Notice 'luasnip' is removed from this list
+    end,
+  },
+
+  { import = "plugins" },
+}, lazy_config)
+
+-- load theme
+dofile(vim.g.base46_cache .. "defaults")
+dofile(vim.g.base46_cache .. "statusline")
+
+require "options"
+require "autocmds"
+
+vim.schedule(function()
+  require "mappings"
+end)
+
+
+
+
+vim.keymap.set({ "n", "v" }, "<C-q>", function()
+  local mode = vim.fn.mode()
+  local start_line, end_line, text
+
+  if mode == "v" or mode == "V" or mode == "\22" then
+    -- Visual mode: use visual marks
+    start_line = vim.fn.line("'<")
+    end_line   = vim.fn.line("'>")
+    if start_line > end_line then start_line, end_line = end_line, start_line end
+
+    local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+    text = table.concat(lines, "\n")
+  else
+    -- Normal mode fallback: use word under cursor and operate on whole file
+    start_line = 1
+    end_line = vim.api.nvim_buf_line_count(0)
+    text = vim.fn.expand("<cword>")
+    if text == "" then
+      print("No word under cursor to replace")
+      return
+    end
+  end
+
+  -- If text contains newlines, warn (simple s/// won't match newlines)
+  if text:find("\n", 1, true) then
+    print("Multi-line selection: this mapping doesn't support replacing multi-line blocks as a single pattern.")
+    return
+  end
+
+  -- Escape the text for the search pattern and escape replacement for & and backslashes
+  local search_esc = vim.fn.escape(text, "/\\")
+  local replacement = vim.fn.input("Replace '" .. text .. "' with: ")
+  local repl_esc = vim.fn.escape(replacement, "\\&/")
+
+  -- Build and run the substitute command
+  if start_line == 1 and end_line == vim.api.nvim_buf_line_count(0) then
+    -- whole-file
+    vim.cmd("silent %s/" .. search_esc .. "/" .. repl_esc .. "/g | update")
+  else
+    vim.cmd(string.format("silent %d,%ds/%s/%s/g | update", start_line, end_line, search_esc, repl_esc))
+  end
+end, opts)
+
+
+
+-- Customization 
+vim.keymap.set("n", "<leader>cp1", function()
+    -- Dynamically fetch the current date and time
+    local current_date = os.date("%Y-%m-%d")
+    local current_time = os.date("%H:%M:%S")
+
+    local template = {
+        "#include <bits/stdc++.h>",
+        "",
+        "using namespace std;",
+        "",
+        "int main() {",
+        "    ios::sync_with_stdio(false);",
+        "    cin.tie(nullptr);",
+        "     ",
+        "    return 0;",
+        "}",
+    }
+
+    -- Insert the template at the top of the current buffer (line 0)
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, template)
+    
+    -- Move cursor to line 18 (the new blank line), column 4
+    vim.api.nvim_win_set_cursor(0, {8, 5})
+    
+    -- Start insert mode automatically
+    vim.cmd("startinsert")
+end, { desc = "Insert dynamic C++ template" })
+
+vim.keymap.set("n", "<leader>cp2", function()
+    -- Dynamically fetch the current date and time
+    local current_date = os.date("%Y-%m-%d")
+    local current_time = os.date("%H:%M:%S")
+
+    local template = {
+        "/*",
+        "Author : d0lph1n ",
+        "Date : " .. current_date .. " ",
+        "Time : " .. current_time,
+        "*/",
+        "",
+        "// 10========== code_segment ==========10",
+        "",
+        "#include <bits/stdc++.h>",
+        "",
+        "using namespace std;",
+        "",
+        "using ll = long long;",
+        "const int MOD = 1e9+7;",
+        "",
+        "void solve(){",
+        "    // code goes here ",
+        "     ", -- New blank line with 4 spaces of indentation
+        "}",
+        "",
+        "int main() {",
+        "    ios::sync_with_stdio(false);",
+        "    cin.tie(nullptr);",
+        "",
+        "    int t = 1;",
+        "    cin >> t;",
+        "    while (t--) {",
+        "        solve();",
+        "    }",
+        "    return 0;",
+        "}",
+        "",
+        "// 10========== test_cases ==========10",
+        "",
+        "/*input",
+        "",
+        "*/",
+        "",
+        "/*output",
+        "",
+        "*/"
+    }
+
+    -- Insert the template at the top of the current buffer (line 0)
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, template)
+    
+    -- Move cursor to line 18 (the new blank line), column 4
+    vim.api.nvim_win_set_cursor(0, {18, 5})
+    
+    -- Start insert mode automatically
+    vim.cmd("startinsert")
+end, { desc = "Insert dynamic C++ template" })
+-- ==========================================================
+-- ADDED: Standard Indentation Rules
+-- ==========================================================
+vim.opt.expandtab = true      -- Use spaces instead of tabs
+vim.opt.shiftwidth = 4        -- Size of an indent (Change to 2 if you prefer 2 spaces)
+vim.opt.tabstop = 4           -- Number of spaces tabs count for
+vim.opt.softtabstop = 4       -- Fine-tunes backspacing over indents
+vim.opt.smartindent = true    -- Insert indents automatically
+vim.opt.autoindent = true     -- Copy indent from current line when starting a new one
+vim.opt.relativenumber = true
+
+
+--   key bindings
+
+local opts ={ noremap = true, silent = true }
+
+
+-- alt + up / down
+-- Normal mode
+vim.api.nvim_set_keymap("n", "<A-Up>", ":m .-2<CR>==", opts)
+vim.api.nvim_set_keymap("n", "<A-Down>", ":m .+1<CR>==", opts)
+
+-- Visual mode
+vim.api.nvim_set_keymap("x", "<A-Up>", ":m '<-2<CR>gv=gv", opts)
+vim.api.nvim_set_keymap("x", "<A-Down>", ":m '>+1<CR>gv=gv", opts)
+
+-- Insert mode: Move current line up
+vim.api.nvim_set_keymap("i", "<A-Up>", "<Esc>:m .-2<CR>==gi", opts)
+-- Insert mode: Move current line down
+vim.api.nvim_set_keymap("i", "<A-Down>", "<Esc>:m .+1<CR>==gi", opts)
+
+
+
+-- saving the file
+vim.keymap.set("i", "<C-s>", "<Esc>:w<CR>i", opts)
+vim.keymap.set("n", "<C-s>", ":w<CR>", opts)
+
+
+
+-- SAVE: Ctrl + S
+vim.keymap.set("i", "<C-s>", "<Esc>:w<CR>i", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true })
+vim.keymap.set("v", "<C-s>", "<Esc>:w<CR>gv", { noremap = true, silent = true })
+
+
+-- vim.keymap.set("i", "<C-S-x>", [[<Esc>:wq]], opts)
+vim.keymap.set("i", "<C-x>", "<Esc><cmd>wq<cr>", opts)
+vim.keymap.set("n", "<C-x>", "<cmd>wq<cr>", opts)
+vim.keymap.set("v", "<C-x>", "<Esc><cmd>wq<cr>", opts)
+
+
+
+
