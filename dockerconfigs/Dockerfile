@@ -1,14 +1,12 @@
-# FROM --platform=linux/amd64 ubuntu:24.04
+# To force Intel on an ARM Mac, use: FROM --platform=linux/amd64 ubuntu:24.04
+# Otherwise, just use the line below to build natively for the host's architecture.
 FROM ubuntu
-
-# FROM --platform=linux/amd64 ubuntu:24.04
-# FROM ubuntu
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Kolkata
 
 # ---------------------------------------------------------
-# Basic packages
+# Basic packages (Neovim installed via apt for multi-arch support)
 # ---------------------------------------------------------
 RUN apt-get update && apt-get install -y \
     zsh \
@@ -28,6 +26,7 @@ RUN apt-get update && apt-get install -y \
     file \
     locales \
     sudo \
+    neovim \
     && rm -rf /var/lib/apt/lists/*
 
 # ---------------------------------------------------------
@@ -37,17 +36,6 @@ RUN locale-gen en_US.UTF-8
 
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
-
-# ---------------------------------------------------------
-# Install latest stable Neovim
-# Official prebuilt x86_64 archive
-# ---------------------------------------------------------
-RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz \
-    && rm -rf /opt/nvim-linux-x86_64 \
-    && tar -C /opt -xzf nvim-linux-x86_64.tar.gz \
-    && rm nvim-linux-x86_64.tar.gz
-
-ENV PATH="/opt/nvim-linux-x86_64/bin:${PATH}"
 
 # ---------------------------------------------------------
 # Oh My Zsh
