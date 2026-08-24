@@ -1,0 +1,303 @@
+-- ==========================================================
+-- Custom NvChad configuration
+-- ==========================================================
+
+local opts = { noremap = true, silent = true }
+
+
+-- ==========================================================
+-- Ctrl + Q : Replace selection / word
+-- ==========================================================
+
+vim.keymap.set({ "n", "v" }, "<C-q>", function()
+  local mode = vim.fn.mode()
+  local start_line, end_line, text
+
+  if mode == "v" or mode == "V" or mode == "\22" then
+    -- Visual mode: use visual marks
+    start_line = vim.fn.line("'<")
+    end_line = vim.fn.line("'>")
+
+    if start_line > end_line then
+      start_line, end_line = end_line, start_line
+    end
+
+    local lines =
+        vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+
+    text = table.concat(lines, "\n")
+  else
+    -- Normal mode: use word under cursor and operate on whole file
+    start_line = 1
+    end_line = vim.api.nvim_buf_line_count(0)
+
+    text = vim.fn.expand("<cword>")
+
+    if text == "" then
+      print("No word under cursor to replace")
+      return
+    end
+  end
+
+  -- Multi-line selections aren't supported by this substitution.
+  if text:find("\n", 1, true) then
+    print(
+      "Multi-line selection: this mapping doesn't support replacing multi-line blocks as a single pattern."
+    )
+    return
+  end
+
+  -- Escape search pattern.
+  local search_esc = vim.fn.escape(text, "/\\")
+
+  -- Ask for replacement.
+  local replacement =
+      vim.fn.input("Replace '" .. text .. "' with: ")
+
+  -- Escape replacement.
+  local repl_esc =
+      vim.fn.escape(replacement, "\\&/")
+
+  -- Execute substitution.
+  if start_line == 1
+      and end_line == vim.api.nvim_buf_line_count(0) then
+
+    vim.cmd(
+      "silent %s/"
+      .. search_esc
+      .. "/"
+      .. repl_esc
+      .. "/g | update"
+    )
+
+  else
+
+    vim.cmd(
+      string.format(
+        "silent %d,%ds/%s/%s/g | update",
+        start_line,
+        end_line,
+        search_esc,
+        repl_esc
+      )
+    )
+
+  end
+end, opts)
+
+
+-- ==========================================================
+-- C++ Template 1
+-- ==========================================================
+
+vim.keymap.set("n", "<leader>cp1", function()
+
+  local template = {
+    "#include <bits/stdc++.h>",
+    "",
+    "using namespace std;",
+    "",
+    "int main() {",
+    "    ios::sync_with_stdio(false);",
+    "    cin.tie(nullptr);",
+    "     ",
+    "    return 0;",
+    "}",
+  }
+
+  vim.api.nvim_buf_set_lines(
+    0,
+    0,
+    -1,
+    false,
+    template
+  )
+
+  vim.api.nvim_win_set_cursor(0, { 8, 5 })
+
+  vim.cmd("startinsert")
+
+end, { desc = "Insert dynamic C++ template" })
+
+
+-- ==========================================================
+-- C++ Template 2
+-- ==========================================================
+
+vim.keymap.set("n", "<leader>cp2", function()
+
+  local current_date = os.date("%Y-%m-%d")
+  local current_time = os.date("%H:%M:%S")
+
+  local template = {
+    "/*",
+    "Author : d0lph1n ",
+    "Date : " .. current_date .. " ",
+    "Time : " .. current_time,
+    "*/",
+    "",
+    "// 10========== code_segment ==========10",
+    "",
+    "#include <bits/stdc++.h>",
+    "",
+    "using namespace std;",
+    "",
+    "using ll = long long;",
+    "const int MOD = 1e9+7;",
+    "",
+    "void solve(){",
+    "    // code goes here ",
+    "     ",
+    "}",
+    "",
+    "int main() {",
+    "    ios::sync_with_stdio(false);",
+    "    cin.tie(nullptr);",
+    "",
+    "    int t = 1;",
+    "    cin >> t;",
+    "    while (t--) {",
+    "        solve();",
+    "    }",
+    "    return 0;",
+    "}",
+    "",
+    "// 10========== test_cases ==========10",
+    "",
+    "/*input",
+    "",
+    "*/",
+    "",
+    "/*output",
+    "",
+    "*/"
+  }
+
+  vim.api.nvim_buf_set_lines(
+    0,
+    0,
+    -1,
+    false,
+    template
+  )
+
+  vim.api.nvim_win_set_cursor(0, { 18, 5 })
+
+  vim.cmd("startinsert")
+
+end, { desc = "Insert dynamic C++ template" })
+
+
+-- ==========================================================
+-- Indentation
+-- ==========================================================
+
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.smartindent = true
+vim.opt.autoindent = true
+vim.opt.relativenumber = true
+
+
+-- ==========================================================
+-- Alt + Up / Down
+-- ==========================================================
+
+-- Normal mode
+vim.api.nvim_set_keymap(
+  "n",
+  "<A-Up>",
+  ":m .-2<CR>==",
+  opts
+)
+
+vim.api.nvim_set_keymap(
+  "n",
+  "<A-Down>",
+  ":m .+1<CR>==",
+  opts
+)
+
+-- Visual mode
+vim.api.nvim_set_keymap(
+  "x",
+  "<A-Up>",
+  ":m '<-2<CR>gv=gv",
+  opts
+)
+
+vim.api.nvim_set_keymap(
+  "x",
+  "<A-Down>",
+  ":m '>+1<CR>gv=gv",
+  opts
+)
+
+-- Insert mode
+vim.api.nvim_set_keymap(
+  "i",
+  "<A-Up>",
+  "<Esc>:m .-2<CR>==gi",
+  opts
+)
+
+vim.api.nvim_set_keymap(
+  "i",
+  "<A-Down>",
+  "<Esc>:m .+1<CR>==gi",
+  opts
+)
+
+
+-- ==========================================================
+-- Saving
+-- ==========================================================
+
+vim.keymap.set(
+  "i",
+  "<C-s>",
+  "<Esc>:w<CR>i",
+  opts
+)
+
+vim.keymap.set(
+  "n",
+  "<C-s>",
+  ":w<CR>",
+  opts
+)
+
+vim.keymap.set(
+  "v",
+  "<C-s>",
+  "<Esc>:w<CR>gv",
+  opts
+)
+
+
+-- ==========================================================
+-- Save and Quit
+-- ==========================================================
+
+vim.keymap.set(
+  "i",
+  "<C-x>",
+  "<Esc><cmd>wq<cr>",
+  opts
+)
+
+vim.keymap.set(
+  "n",
+  "<C-x>",
+  "<cmd>wq<cr>",
+  opts
+)
+
+vim.keymap.set(
+  "v",
+  "<C-x>",
+  "<Esc><cmd>wq<cr>",
+  opts
+)
