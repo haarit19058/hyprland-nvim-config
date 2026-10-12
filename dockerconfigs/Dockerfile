@@ -1,6 +1,6 @@
 # To force Intel on an ARM Mac, use: FROM --platform=linux/amd64 ubuntu:24.04
 # Otherwise, just use the line below to build natively for the host's architecture.
-FROM ubuntu
+FROM amd64/ubuntu
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Kolkata

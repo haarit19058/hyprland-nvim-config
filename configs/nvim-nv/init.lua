@@ -98,7 +98,128 @@ end, opts)
 
 
 -- Customization 
+vim.keymap.set("n", "<leader>cp1", function()
+    -- Dynamically fetch the current date and time
+    local current_date = os.date("%Y-%m-%d")
+    local current_time = os.date("%H:%M:%S")
 
+    local template = {
+        "#include <bits/stdc++.h>",
+        "",
+        "using namespace std;",
+        "",
+        "int main() {",
+        "    ios::sync_with_stdio(false);",
+        "    cin.tie(nullptr);",
+        "     ",
+        "    return 0;",
+        "}",
+    }
+
+    -- Insert the template at the top of the current buffer (line 0)
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, template)
+    
+    -- Move cursor to line 18 (the new blank line), column 4
+    vim.api.nvim_win_set_cursor(0, {8, 5})
+    
+    -- Start insert mode automatically
+    vim.cmd("startinsert")
+end, { desc = "Insert dynamic C++ template" })
+
+vim.keymap.set("n", "<leader>cp2", function()
+    -- Dynamically fetch the current date and time
+    local current_date = os.date("%Y-%m-%d")
+    local current_time = os.date("%H:%M:%S")
+
+    local template = {
+        "/*",
+        "Author : d0lph1n ",
+        "Date : " .. current_date .. " ",
+        "Time : " .. current_time,
+        "*/",
+        "",
+        "// 10========== code_segment ==========10",
+        "",
+        "#include <bits/stdc++.h>",
+        "",
+        "using namespace std;",
+        "",
+        "using ll = long long;",
+        "const int MOD = 1e9+7;",
+        "",
+        "void solve(){",
+        "    // code goes here ",
+        "     ", -- New blank line with 4 spaces of indentation
+        "}",
+        "",
+        "int main() {",
+        "    ios::sync_with_stdio(false);",
+        "    cin.tie(nullptr);",
+        "",
+        "    int t = 1;",
+        "    cin >> t;",
+        "    while (t--) {",
+        "        solve();",
+        "    }",
+        "    return 0;",
+        "}",
+        "",
+        "// 10========== test_cases ==========10",
+        "",
+        "/*input",
+        "",
+        "*/",
+        "",
+        "/*output",
+        "",
+        "*/"
+    }
+
+    -- Insert the template at the top of the current buffer (line 0)
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, template)
+    
+    -- Move cursor to line 18 (the new blank line), column 4
+    vim.api.nvim_win_set_cursor(0, {18, 5})
+    
+    -- Start insert mode automatically
+    vim.cmd("startinsert")
+end, { desc = "Insert dynamic C++ template" })
+
+
+
+vim.keymap.set("n", "<leader>cp3", function()
+    local template = {
+        "import sys",
+        "import heapq",
+        "from collections import Counter, defaultdict, deque",
+        "from bisect import bisect_left, bisect_right",
+        "",
+        "input = sys.stdin.readline  # Faster input for large test cases.",
+        "",
+        "def solve():",
+        "    n = int(input())",
+        "    arr = list(map(int, input().split()))",
+        "    ",
+        "    # Solve one test case here.",
+        "",
+        "def main():",
+        "    t = int(input())",
+        "    for _ in range(t):",
+        "        solve()",
+        "",
+        "if __name__ == \"__main__\":",
+        "    main()",
+    }
+
+    -- Insert the template into the current buffer.
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, template)
+
+    -- Position cursor inside solve(), ready to write code.
+    vim.api.nvim_win_set_cursor(0, {11, 4})
+
+    -- Start insert mode automatically.
+    vim.cmd("startinsert")
+end, { desc = "Insert Python DSA template" })
 
 
 
@@ -111,7 +232,7 @@ vim.opt.tabstop = 4           -- Number of spaces tabs count for
 vim.opt.softtabstop = 4       -- Fine-tunes backspacing over indents
 vim.opt.smartindent = true    -- Insert indents automatically
 vim.opt.autoindent = true     -- Copy indent from current line when starting a new one
-
+vim.opt.relativenumber = true
 
 
 --   key bindings

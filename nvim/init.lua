@@ -184,6 +184,45 @@ vim.keymap.set("n", "<leader>cp2", function()
     -- Start insert mode automatically
     vim.cmd("startinsert")
 end, { desc = "Insert dynamic C++ template" })
+
+
+
+vim.keymap.set("n", "<leader>cp3", function()
+    local template = {
+        "import sys",
+        "import heapq",
+        "from collections import Counter, defaultdict, deque",
+        "from bisect import bisect_left, bisect_right",
+        "",
+        "input = sys.stdin.readline  # Faster input for large test cases.",
+        "",
+        "def solve():",
+        "    n = int(input())",
+        "    arr = list(map(int, input().split()))",
+        "    ",
+        "    # Solve one test case here.",
+        "",
+        "def main():",
+        "    t = int(input())",
+        "    for _ in range(t):",
+        "        solve()",
+        "",
+        "if __name__ == \"__main__\":",
+        "    main()",
+    }
+
+    -- Insert the template into the current buffer.
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, template)
+
+    -- Position cursor inside solve(), ready to write code.
+    vim.api.nvim_win_set_cursor(0, {11, 4})
+
+    -- Start insert mode automatically.
+    vim.cmd("startinsert")
+end, { desc = "Insert Python DSA template" })
+
+
+
 -- ==========================================================
 -- ADDED: Standard Indentation Rules
 -- ==========================================================
